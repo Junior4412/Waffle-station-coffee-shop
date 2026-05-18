@@ -1,32 +1,52 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MENU_CATEGORIES } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
-function MenuItemCard({
-  item,
-  index,
-}: {
-  item: (typeof MENU_CATEGORIES)[0]["items"][0];
-  index: number;
-}) {
+type MenuItem = (typeof MENU_CATEGORIES)[0]["items"][0];
+
+function MenuItemCard({ item, index }: { item: MenuItem; index: number }) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ delay: index * 0.05, duration: 0.4 }}
-      className="relative group flex items-start gap-4 p-4 rounded-xl border border-dark-border bg-dark-card/60 hover:border-gold/30 hover:bg-dark-card transition-all duration-300 card-hover"
+      className="relative group flex items-start gap-0 rounded-xl border border-dark-border bg-dark-card/60 hover:border-gold/30 hover:bg-dark-card transition-all duration-300 card-hover overflow-hidden"
     >
-      {/* Color accent stripe */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl bg-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Gold accent stripe */}
+      <div className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl bg-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
-      {/* Text */}
-      <div className="flex-1 min-w-0">
+      {/* Product image */}
+      {item.image && !imgError ? (
+        <div className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 overflow-hidden">
+          <Image
+            src={item.image}
+            alt={item.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={() => setImgError(true)}
+            sizes="112px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-dark-card/20" />
+        </div>
+      ) : (
+        <div className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center bg-dark-border/30 text-3xl">
+          {MENU_CATEGORIES.find((c) =>
+            c.items.some((i) => i.id === item.id)
+          )?.icon ?? "🧇"}
+        </div>
+      )}
+
+      {/* Text content */}
+      <div className="flex-1 min-w-0 p-3 sm:p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h4 className="text-cream-100 font-semibold text-sm leading-tight group-hover:text-gold transition-colors duration-300">
             {item.name}
@@ -37,29 +57,44 @@ function MenuItemCard({
             </span>
           )}
         </div>
-        <p className="text-cream-200/50 text-xs leading-relaxed mb-2">{item.description}</p>
-        {item.tags && (
-          <div className="flex flex-wrap gap-1">
-            {item.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs text-cream-200/30 bg-dark-border/40 px-2 py-0.5 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
 
-      {/* Price */}
-      <div className="shrink-0 text-right">
-        <p
-          className="text-gold font-display font-bold text-lg"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {formatPrice(item.price)}
+        <p className="text-cream-200/50 text-xs leading-relaxed mb-2 line-clamp-2">
+          {item.description}
         </p>
+
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          {/* Tags */}
+          {item.tags && item.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {item.tags.slice(0, 2).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs text-cream-200/30 bg-dark-border/40 px-2 py-0.5 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Price + serves */}
+          <div className="shrink-0 text-right ml-auto">
+            {"serves" in item && item.serves && (
+              <p className="text-cream-200/30 text-[10px] mb-0.5">
+                {item.serves}
+              </p>
+            )}
+            <p
+              className="text-gold font-display font-bold text-lg leading-none"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {"priceFrom" in item && item.priceFrom && (
+                <span className="text-xs font-normal mr-0.5">a partir de</span>
+              )}
+              {formatPrice(item.price)}
+            </p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -92,7 +127,11 @@ export default function MenuSection() {
 
         {/* Category Tabs */}
         <ScrollReveal delay={0.2}>
-          <div className="flex overflow-x-auto gap-2 mb-10 pb-2 scrollbar-hide justify-start md:justify-center">
+          <div
+            className="flex overflow-x-auto gap-2 mb-10 pb-2 scrollbar-hide justify-start md:justify-center"
+            role="tablist"
+            aria-label="Categorias do cardápio"
+          >
             {MENU_CATEGORIES.map((category) => (
               <button
                 key={category.id}
@@ -139,7 +178,8 @@ export default function MenuSection() {
         {/* Note */}
         <ScrollReveal delay={0.3}>
           <p className="text-center text-cream-200/30 text-xs mt-10">
-            * Preços sujeitos a alteração sem aviso prévio. Consulte-nos sobre alérgenos e opções sem glúten.
+            * Preços sujeitos a alteração sem aviso prévio. Consulte-nos sobre
+            alérgenos e opções sem glúten.
           </p>
         </ScrollReveal>
       </div>
