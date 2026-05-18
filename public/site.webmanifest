@@ -1,0 +1,16 @@
+{
+  "name": "Waffle Station Coffee Shop",
+  "short_name": "Waffle Station",
+  "description": "Waffles artesanais e cafés especiais em Mauá, SP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0906",
+  "theme_color": "#0e0906",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
