@@ -7,9 +7,9 @@ export const SITE_CONFIG = {
   phone: "(11) 97061-4479",
   phoneRaw: "5511970614479",
   whatsapp: "5511970614479",
-  instagram: "https://instagram.com/wafflestationcoffee",
-  tiktok: "https://tiktok.com/@wafflestationcoffee",
-  ifood: "https://www.ifood.com.br",
+  instagram: "https://www.instagram.com/wafflestationmaua/",
+  tiktok: "https://www.tiktok.com/@wafflestationmaua",
+  ifood: "https://www.ifood.com.br/delivery/maua-sp/waffle-station-cafeteria-jardim-zaira/b7377311-0483-49db-bd55-70bd00252480?UTM_Medium=share",
   priceRange: "R$20 – R$40",
   googleMapsEmbed:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3653.4!2d-46.46!3d-23.67!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQwJzEyLjAiUyA0NsKwMjcnMzYuMCJX!5e0!3m2!1spt-BR!2sbr!4v1234567890",

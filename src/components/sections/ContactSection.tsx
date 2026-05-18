@@ -116,7 +116,7 @@ export default function ContactSection() {
               {
                 icon: "📸",
                 label: "Instagram",
-                desc: "@wafflestationcoffee",
+                desc: "@wafflestationmaua",
                 href: SITE_CONFIG.instagram,
                 cta: "Seguir",
                 color: "#E1306C",
